@@ -1,0 +1,15 @@
+node_modules
+dist
+.env.local
+.env
+_source/generated/*.json
+
+# Working material: recordings, reference photos, generated images (not needed to build)
+_source/
+# Test copy of the old page transition
+_dev/legacy/
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.log

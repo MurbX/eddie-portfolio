@@ -1,0 +1,65 @@
+  <!-- Critical styles: painted in the very first frame of every page, before the main
+       stylesheet or any script. The page-transition curtain (five plain panels) must look
+       identical on the page you leave and the page you arrive on. -->
+  <style>
+    /* No native scrollbar: fixed layers (curtain, loader) cannot paint over it, which left a
+       strip of page showing down the right edge. A slim indicator (.scrollbar) stands in. */
+    html { background: #050709; scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
+    html.is-intro, html.is-transition { overflow: hidden; }
+    .curtain { position: fixed; inset: 0; z-index: 210; pointer-events: none; }
+    .curtain .panels { position: absolute; inset: 0; display: flex; }
+    .curtain .panels i { flex: 1 0 0; margin-right: -1px; background: #0a1016; box-shadow: inset 1px 0 0 rgba(241, 236, 228, .05); will-change: transform; }
+    .curtain .panels i:first-child { box-shadow: none; }
+    .curtain .panels i:last-child { margin-right: 0; }
+    .curtain__content { visibility: hidden; }
+    .no-js .curtain, .no-curtain .curtain, .no-curtain .loader { display: none !important; }
+    @media (hover: hover) and (pointer: fine) {
+      html.has-cursor, html.has-cursor * { cursor: none !important; }
+    }
+    /* While a page boots nothing may animate into place (on the dev server the main styles
+       arrive after the first frame, which otherwise makes things slide/fade as they apply) */
+    html.is-booting *, html.is-booting *::before, html.is-booting *::after { transition: none !important; }
+    html.is-intro .cursor, html.is-transition .cursor { opacity: 0; }
+
+    /* Leaving a page: the browser carries the curtain's logo, name and lines across the
+       page change as pictures (a cross-document view transition), so the next page can move
+       them out at the same moment its panels lift (carriedExit in core.js). The page itself
+       is never cross-faded. Browsers without this fade them out before leaving instead. */
+    @media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
+    html.is-carry .curtain__mark { view-transition-name: ev-mark; }
+    html.is-carry .curtain__label { view-transition-name: ev-label; }
+    html.is-carry .curtain__line { view-transition-name: ev-line; }
+    html.is-carry .curtain__seams i:nth-child(1) b { view-transition-name: ev-seam-1; }
+    html.is-carry .curtain__seams i:nth-child(2) b { view-transition-name: ev-seam-2; }
+    html.is-carry .curtain__seams i:nth-child(3) b { view-transition-name: ev-seam-3; }
+    html.is-carry .curtain__seams i:nth-child(4) b { view-transition-name: ev-seam-4; }
+    ::view-transition-old(root) { display: none; }
+    ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+    /* Logo, name and underline wait in place until the page's script moves them out */
+    ::view-transition-old(ev-mark), ::view-transition-old(ev-label), ::view-transition-old(ev-line) { animation: ev-hold 6s linear both; }
+    ::view-transition-old(ev-line) { transform-origin: right; }
+    /* The seam lines never pause: each carries on at the speed it had on the last page */
+    ::view-transition-old(ev-seam-1) { animation: ev-seam-1 1750ms linear both; }
+    ::view-transition-old(ev-seam-2) { animation: ev-seam-2 2050ms linear both; }
+    ::view-transition-old(ev-seam-3) { animation: ev-seam-3 1900ms linear both; }
+    ::view-transition-old(ev-seam-4) { animation: ev-seam-4 2250ms linear both; }
+    @keyframes ev-hold { from, to { opacity: 1; } }
+    @keyframes ev-seam-1 { to { transform: translateY(-117vh); } }
+    @keyframes ev-seam-2 { to { transform: translateY(112vh); } }
+    @keyframes ev-seam-3 { to { transform: translateY(-121vh); } }
+    @keyframes ev-seam-4 { to { transform: translateY(114vh); } }
+  </style>
+  <script>
+    (function (c) {
+      c.replace('no-js', 'js');
+      c.add('is-intro', 'is-booting');
+      try {
+        if (matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) c.add('has-cursor');
+      } catch (e) {}
+      // Arriving through a view transition: keep a handle so the main script can run the exit
+      addEventListener('pagereveal', function (e) { window.__evVT = e.viewTransition || null; });
+      // Failsafe: if the main script never starts, don't leave the page covered
+      setTimeout(function () { if (!window.__evBooted) { c.add('no-curtain'); c.remove('is-intro', 'has-cursor'); } }, 6000);
+    })(document.documentElement.classList);
+  </script>

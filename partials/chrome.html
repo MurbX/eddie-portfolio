@@ -1,0 +1,68 @@
+  <!-- Page-transition curtain -->
+  <div class="curtain" aria-hidden="true">
+    <div class="panels"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="curtain__content">
+      <!-- decoding="sync": the logo is painted in the very first frame, never popping in after -->
+      <img class="curtain__mark" src="/brand/mark.webp" alt="" width="256" height="426" decoding="sync" fetchpriority="high" />
+      <!-- The page name is in the HTML itself, so the arriving page shows the complete curtain immediately -->
+      <p class="curtain__label" data-curtain-label><span>{{page}}</span></p>
+      <span class="curtain__line"></span>
+      <!-- Short lines that slide along the four seams between the panels and stop -->
+      <div class="curtain__seams"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+    </div>
+  </div>
+
+  <!-- Custom cursor (fine pointers only) -->
+  <div class="cursor" aria-hidden="true">
+    <div class="cursor__ring"><span class="cursor__label"></span></div>
+    <div class="cursor__dot"></div>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+  <!-- Scroll indicator (the native scrollbar is hidden so the curtain covers the full width) -->
+  <div class="scrollbar" aria-hidden="true"><i></i></div>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="/" class="brand" aria-label="eddieVsuals home">
+      <img src="/brand/mark.webp" alt="" width="26" height="43" />
+      <span class="brand__text"><b>Photographer</b><span>Filmmaker · Designer</span></span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <a href="/#work" class="nav__link" data-nav="work"><span data-text="Work">Work</span></a>
+      <a href="/services/" class="nav__link" data-nav="services"><span data-text="Services">Services</span></a>
+      <a href="/services/videography/" class="nav__link" data-nav="films"><span data-text="Films">Films</span></a>
+      <a href="/#about" class="nav__link" data-nav="about"><span data-text="About">About</span></a>
+      <a href="/#contact" class="nav__link" data-nav="contact"><span data-text="Contact">Contact</span></a>
+    </nav>
+
+    <div class="header__end">
+      <p class="local-time" aria-label="Eddie's local time in Nairobi">
+        <span>Nairobi</span>
+        <time data-local-time>--:--</time>
+      </p>
+      <a href="/#contact" class="header-cta">
+        <span class="header-cta__label"><span data-text="Let's talk">Let's talk</span></span>
+        <svg class="i"><use href="#i-arrow-ne"/></svg>
+      </a>
+    </div>
+
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu">
+      <span class="menu-btn__bar"></span><span class="menu-btn__bar"></span>
+      <span class="sr-only">Menu</span>
+    </button>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" inert>
+    <nav class="mobile-menu__nav" aria-label="Mobile">
+      <a href="/#work"><small>01</small><span>Work</span><svg class="i" aria-hidden="true"><use href="#i-arrow-ne"/></svg></a>
+      <a href="/services/"><small>02</small><span>Services</span><svg class="i" aria-hidden="true"><use href="#i-arrow-ne"/></svg></a>
+      <a href="/services/videography/"><small>03</small><span>Films</span><svg class="i" aria-hidden="true"><use href="#i-arrow-ne"/></svg></a>
+      <a href="/#about"><small>04</small><span>About</span><svg class="i" aria-hidden="true"><use href="#i-arrow-ne"/></svg></a>
+      <a href="/#contact"><small>05</small><span>Contact</span><svg class="i" aria-hidden="true"><use href="#i-arrow-ne"/></svg></a>
+    </nav>
+    <div class="mobile-menu__foot">
+      <a href="mailto:owitieedwin@gmail.com">owitieedwin@gmail.com</a>
+      <a href="https://www.instagram.com/eddieowitie" target="_blank" rel="noopener">Instagram ↗</a>
+    </div>
+  </div>
